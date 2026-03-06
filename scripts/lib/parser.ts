@@ -37,7 +37,7 @@ const parser = new XMLParser({
   isArray: (name: string) => {
     // These elements can appear multiple times
     return [
-      'article', 'chapter', 'section', 'part',
+      'article', 'chapter', 'section', 'subsection', 'part', 'title',
       'alinea', 'paragraph', 'p', 'li', 'ol', 'ul',
       'content', 'num', 'heading', 'container',
       'scl:jolux',
@@ -270,6 +270,33 @@ function extractArticles(body: Record<string, unknown>): ParsedProvision[] {
           ? cleanText(extractText(part['num']))
           : String(i + 1);
         processContainer(part, partNum);
+      }
+    }
+
+    // Process title elements (Legilux uses <title> as top-level structural
+    // containers equivalent to "Titre I", "Titre II", etc.)
+    const titles = container['title'];
+    if (titles) {
+      const titleArr = Array.isArray(titles) ? titles : [titles];
+      for (let i = 0; i < titleArr.length; i++) {
+        const titleEl = titleArr[i] as Record<string, unknown>;
+        const titleNum = titleEl['num']
+          ? cleanText(extractText(titleEl['num']))
+          : String(i + 1);
+        processContainer(titleEl, chapterRef ?? titleNum);
+      }
+    }
+
+    // Process subsections
+    const subsections = container['subsection'];
+    if (subsections) {
+      const subsectionArr = Array.isArray(subsections) ? subsections : [subsections];
+      for (let i = 0; i < subsectionArr.length; i++) {
+        const subsection = subsectionArr[i] as Record<string, unknown>;
+        const subsectionNum = subsection['num']
+          ? cleanText(extractText(subsection['num']))
+          : (chapterRef ? `${chapterRef}.${i + 1}` : String(i + 1));
+        processContainer(subsection, subsectionNum);
       }
     }
   }
