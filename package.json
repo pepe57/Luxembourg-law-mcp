@@ -10,11 +10,13 @@
   },
   "files": [
     "dist",
-    "data/database.db"
+    "data/database.db",
+    "data/seed"
   ],
   "scripts": {
     "build": "tsc",
     "build:db": "node --import tsx scripts/build-db.ts",
+    "patch-db": "node --import tsx scripts/patch-db.ts",
     "dev": "node --import tsx src/index.ts",
     "start": "node dist/index.js",
     "test": "vitest run",

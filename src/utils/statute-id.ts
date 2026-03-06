@@ -25,7 +25,14 @@ interface DocRow {
 // ---------------------------------------------------------------------------
 
 const ABBREVIATIONS: Record<string, string> = {
-  // Example: 'DPA': 'data-protection-act-2019',
+  // Luxembourg data protection law (Loi du 1er août 2018 portant organisation
+  // de la Commission nationale pour la protection des données)
+  'loi du 1er août 2018': 'loi-2018-08-01-a686',
+  'Loi du 1er août 2018': 'loi-2018-08-01-a686',
+  'loi du 1er aout 2018': 'loi-2018-08-01-a686',
+  'Loi du 1er aout 2018': 'loi-2018-08-01-a686',
+  'LPD': 'loi-2018-08-01-a686',
+  'lpd': 'loi-2018-08-01-a686',
 };
 
 // ---------------------------------------------------------------------------
